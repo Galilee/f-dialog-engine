@@ -1,0 +1,22 @@
+.reveal section .title {
+    margin-bottom: 30px;
+}
+
+.reveal > .slides .content {
+    color: #777;
+    font-size: 0.7em;
+}
+
+.reveal > .slides > img {
+    padding: 20px;
+}
+
+.reveal > .slides .content .main {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.reveal > .slides .content .second {
+    font-size: 0.8em;
+    font-weight: normal;
+}
