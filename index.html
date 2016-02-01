@@ -66,9 +66,9 @@
                             <li class="second"><pre><code>/symlnks/common/services/tomcat7.0 restart</code></pre></li>
                         </ul>
                     </li>
-                    <li class="main">Si il y a un soucis, analyser les logs de Tomcat
+                    <li class="main">S'il y a un soucis, analyser les logs de Tomcat
                         <ul class="no-style">
-                            <li class="second"><pre><code>cat /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
+                            <li class="second"><pre><code>less /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
                         </ul>
                     </li>
                 </ul>
@@ -88,10 +88,10 @@
                     <li class="main">Enregistrer le fichier via l'API Dialog
                         <ul class="no-style">
                             <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/RegisterDocument?Document=[volume]:[docName]&ClearOldData=[true|false]</code></pre></li>
-                            <li class="second">volume: alias du volume (la lettre)</li>
+                            <li class="second">volume : alias du volume (la lettre)</li>
                         </ul>
                     </li>
-                    <li class="main">Résultats sur le serveur: créations de différents fichiers
+                    <li class="main">Résultats sur le serveur : création de différents fichiers
                         <ul class="no-style">
                             <li class="second"><pre><code>ls /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]*</code></pre></li>
                             <li class="second">*_info.xml</li>
@@ -158,7 +158,7 @@
                         <ul class="no-style">
                             <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false]</code></pre></li>
                             <li class="second">Uniquement la preview de la première page</li>
-                            <li class="second">Content-Type: image/jpeg (par défaut)</li>
+                            <li class="second">Content-Type : image/jpeg (par défaut)</li>
                             <li class="second">Test pour récupération du fichier
                                 <ul>
                                     <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
@@ -170,7 +170,7 @@
                         <ul class="no-style">
                             <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false]</code></pre></li>
                             <li class="second">Uniquement la thumbnail de la première page</li>
-                            <li class="second">Content-Type: image/jpeg (par défaut)</li>
+                            <li class="second">Content-Type : image/jpeg (par défaut)</li>
                             <li class="second">Test pour récupération du fichier
                                 <ul>
                                     <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
@@ -190,22 +190,22 @@
                             <li class="second">Fichier de rapport de notes
                                 <ul>
                                     <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/document?action=getPDFNotesReport&doc=[volume]:[docName]&content=Notes&hideEmptyPages=[false]</code></pre></li>
-                                    <li class="third"><strong>&content=Notes</strong>: permet d'afficher sur le rapport uniquement les éléments relatifs aux annotations (plus lisible)</li>
-                                    <li class="third"><strong>&hideEmtptyPages=true</strong>: génère un rapport avec uniquement les pages soumises aux annotations</li>
+                                    <li class="third"><strong>&content=Notes</strong> : permet d'afficher sur le rapport uniquement les éléments relatifs aux annotations (plus lisible)</li>
+                                    <li class="third"><strong>&hideEmtptyPages=true</strong> : génère un rapport avec uniquement les pages soumises aux annotations</li>
                                 </ul>
                             </li>
                             <li class="second">Fichier de rapport de notes (déjà renommé)
                                 <ul>
                                     <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/Download/[newName]?doc=[volume]:[docName]&action=getPDFNotesReport&content=Notes&hideEmptyPages=[false]</code></pre></li>
-                                    <li class="third"><strong>newName</strong>: permet de renommer le fichier à la volée</li>
+                                    <li class="third"><strong>newName</strong> : permet de renommer le fichier à la volée</li>
                                     <li class="third">Même paramètres qu'avant</li>
                                 </ul>
                             </li>
                             <li class="second">Fichier de rapport de notes en haute résolution (paramétrable)
                                 <ul>
                                     <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/HighResolution/[newName]?doc=[volume]:[docName]&Resolution=[72]&Original=[false]</code></pre></li>
-                                    <li class="third"><strong>&Resolution</strong>: permet de définir une résolution spécifique (par défaut 72dpi)</li>
-                                    <li class="third"><strong>&Original=false</strong>: permet d'avoir un élément rastérisé (conversion d'un élément vectoriel en élément matriciel)</li>
+                                    <li class="third"><strong>&Resolution</strong> : permet de définir une résolution spécifique (par défaut 72dpi)</li>
+                                    <li class="third"><strong>&Original=false</strong> : permet d'avoir un élément rastérisé (conversion d'un élément vectoriel en élément matriciel)</li>
                                 </ul>
                             </li>
                         </ul>
@@ -228,7 +228,7 @@
             <div class="content">
                 <ul>
                     <li class="main">Nécessite de créer une page web HTML/Javascript</li>
-                    <li class="main">Exemple <a href="https://github.com/Galilee/formation-dialog-engine/blob/gh-pages/example.html">ici</a></li>
+                    <li class="main">Exemple <a target="_blank" href="https://github.com/Galilee/formation-dialog-engine/blob/gh-pages/example.html">ici</a></li>
                     <li class="main">Explications détaillées
                         <ul>
                             <li class="second">Initialisation et ouverture de document
@@ -245,7 +245,7 @@
             </div>
         </section>
         <section>
-            <h3 class="title">7 - Pour se donner envi... Approve & Reject</h3>
+            <h3 class="title">7 - Approve & Reject</h3>
             <div class="content">
                 <ul>
                     <li class="main">Par défaut, stored dans le cache de Tomcat
@@ -253,7 +253,7 @@
                             <li class="second">Persisté jusqu'au restart de Tomcat</li>
                         </ul>
                     </li>
-                    <li class="main">Possibilité d'utiliser l'API persistence</li>
+                    <li class="main">Possibilité d'utiliser la Persistence API</li>
                     <li class="main">Possibilité d'utiliser des endpoints basiques pour persister
                         <ul>
                             <li class="second">Modification du <strong>DialogOEMProperties.xml</strong></li>
@@ -263,7 +263,7 @@
                                     <li class="third">
                                         <pre><code><Property Key="SetApprovalStatus" Value="http://[end_point]/$(DocumentName)/$(Status)"/></code></pre>
                                     </li>
-                                    <li class="third"><strong>[end_point]</strong>: API REST qui persiste en bdd les données</li>
+                                    <li class="third"><strong>[end_point]</strong> : API REST qui persiste en bdd les données</li>
                                 </ul>
                             </li>
                             <li class="second">Ajout du endpoint 'GetApprovalStatus' dans la configuration
@@ -271,7 +271,7 @@
                                     <li class="third">
                                         <pre><code><Property Key="GetApprovalStatus" Value="http://[end_point]/$(DocumentName)"/></code></pre>
                                     </li>
-                                    <li class="third"><strong>[end_point]</strong>: API REST qui vient faire un GET pour récupérer les données</li>
+                                    <li class="third"><strong>[end_point]</strong> : API REST qui vient faire un GET pour récupérer les données</li>
                                 </ul>
                             </li>
                         </ul>
