@@ -27,14 +27,14 @@
                     <li class="main">Enregistrer un nouveau document</li>
                     <li class="main">Création d'annotations</li>
                     <li class="main">Générer des previews et des thumbnails</li>
-                    <li class="main">Récupérer l'historique des notes
+                    <li class="main">Récupérer l'historique et les notes
                         <ul>
                             <li class="second">Fournir un fichier au format PDF au client</li>
                             <li class="second">Récupérer les données brutes (au format XML)</li>
                         </ul>
                     </li>
                     <li class="main">
-                        Ouvrir l'applet de Dialog
+                        Ouvrir l'applet de Dialog Engine en mode détaillé
                         <ul>
                             <li class="second">Activer / Désactiver la validation</li>
                             <li class="second">Activer / Désactiver la pose de notes</li>
@@ -180,6 +180,107 @@
                     </li>
                 </ul>
             </div>
+        </section>
+        <section>
+            <h3 class="title">5 - Récupérer l'historique du document et les notes</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Génération d'un fichier PDF (trois méthodes)
+                        <ul class="no-style">
+                            <li class="second">Fichier de rapport de notes
+                                <ul>
+                                    <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/document?action=getPDFNotesReport&doc=[volume]:[docName]&content=Notes&hideEmptyPages=[false]</code></pre></li>
+                                    <li class="third"><strong>&content=Notes</strong>: permet d'afficher sur le rapport uniquement les éléments relatifs aux annotations (plus lisible)</li>
+                                    <li class="third"><strong>&hideEmtptyPages=true</strong>: génère un rapport avec uniquement les pages soumises aux annotations</li>
+                                </ul>
+                            </li>
+                            <li class="second">Fichier de rapport de notes (déjà renommé)
+                                <ul>
+                                    <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/Download/[newName]?doc=[volume]:[docName]&action=getPDFNotesReport&content=Notes&hideEmptyPages=[false]</code></pre></li>
+                                    <li class="third"><strong>newName</strong>: permet de renommer le fichier à la volée</li>
+                                    <li class="third">Même paramètres qu'avant</li>
+                                </ul>
+                            </li>
+                            <li class="second">Fichier de rapport de notes en haute résolution (paramétrable)
+                                <ul>
+                                    <li class="third"><pre><code>http://[ip_dialog_server]/DialogOEMServer/servlet/HighResolution/[newName]?doc=[volume]:[docName]&Resolution=[72]&Original=[false]</code></pre></li>
+                                    <li class="third"><strong>&Resolution</strong>: permet de définir une résolution spécifique (par défaut 72dpi)</li>
+                                    <li class="third"><strong>&Original=false</strong>: permet d'avoir un élément rastérisé (conversion d'un élément vectoriel en élément matriciel)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="main">Récupération des données brutes (au format XML)
+                        <ul class="no-style">
+                            <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/GetDocumentXMLReport?Document=[volume]:[docName]</code></pre></li>
+                            <li class="second">Balises <strong>[Notes] / [Note]</strong> pour la liste de toute les notes</li>
+                            <li class="second">Attributs <strong>[id] / [parentID]</strong> pour établir une parenté entre les notes</li>
+                            <li class="second">Balises <strong>[History] / [Event]</strong> pour retrouver l'historique</li>
+                            <li class="second">Balises <strong>[Page]</strong> correspondent au register d'un document</li>
+                            <li class="second">Balises <strong>[Users] / [User]</strong> pour les différentes utilisateurs ayant manipulé l'application</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">6 - Ouvrir l'applet de Dialog Engine en mode détaillé</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Nécessite de créer une page web HTML/Javascript</li>
+                    <li class="main">Exemple <a href="https://github.com/Galilee/formation-dialog-engine/blob/gh-pages/example.html">ici</a></li>
+                    <li class="main">Explications détaillées
+                        <ul>
+                            <li class="second">Initialisation et ouverture de document
+                                <ul>
+                                    <li class="third">Nom de l'utilisateur à utiliser</li>
+                                    <li class="third">Nom du document à ouvrir</li>
+                                    <li class="third">Désactivation annotation et approbation</li>
+                                </ul>
+                            </li>
+                            <li class="second">Modification potentielle du DOM pour personnalisation</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">7 - Pour se donner envi... Approve & Reject</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Par défaut, stored dans le cache de Tomcat
+                        <ul>
+                            <li class="second">Persisté jusqu'au restart de Tomcat</li>
+                        </ul>
+                    </li>
+                    <li class="main">Possibilité d'utiliser l'API persistence</li>
+                    <li class="main">Possibilité d'utiliser des endpoints basiques pour persister
+                        <ul>
+                            <li class="second">Modification du <strong>DialogOEMProperties.xml</strong></li>
+                            <li class="second">Création d'une API REST (par exemple) pour gérer la persistence</li>
+                            <li class="second">Ajout du endpoint 'SetApprovalStatus' dans la configuration
+                                <ul>
+                                    <li class="third">
+                                        <pre><code><Property Key="SetApprovalStatus" Value="http://[end_point]/$(DocumentName)/$(Status)"/></code></pre>
+                                    </li>
+                                    <li class="third"><strong>[end_point]</strong>: API REST qui persiste en bdd les données</li>
+                                </ul>
+                            </li>
+                            <li class="second">Ajout du endpoint 'GetApprovalStatus' dans la configuration
+                                <ul>
+                                    <li class="third">
+                                        <pre><code><Property Key="GetApprovalStatus" Value="http://[end_point]/$(DocumentName)"/></code></pre>
+                                    </li>
+                                    <li class="third"><strong>[end_point]</strong>: API REST qui vient faire un GET pour récupérer les données</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h1 class="title">Questions ?</h1>
         </section>
     </div>
 </div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type='text/javascript' src='html/js/DialogueSDK.js'></script>
+    <script type='text/javascript'>
+        function startDialog() {
+            dialog.resources.resolver = function resolver(resourceName) {
+                return "html/" + resourceName;
+            };
+
+            dialog.app.init('/DialogOEMServer/servlet/WebViewerAppletServlet', 'UserName');
+            dialog.app.model = dialog.model.PageModel([
+                {id: 'A:1234.pdf', displayName: '1234.pdf', locked: true},
+            ]);
+
+            dialog.app.attachTo(document.getElementById("HTML5_FRAME"), dialog.sdk.Full);
+
+            window.onresize = function () {
+                if (dialog.app.container && isFunction(dialog.app.container.relayout))
+                    dialog.app.container.relayout();
+            };
+
+            dialog.app.view.showDocument(dialog.app.model.elements[0]);
+
+            // Enlève la frame de gauche (si on est dans le cas d'un mono-document)
+            var elements = document.getElementsByClassName('frame_left');
+            if (elements.length) {
+                var frameLeft = elements[0];
+                var frameCenter = document.getElementsByClassName('frame_center')[0];
+                frameLeft.parentNode.removeChild(frameLeft);
+                frameCenter.style.left = "10px";
+                dialog.app.container.relayout();
+            }
+
+            // Enlève les notes (de l'écran principal et de la frame de droite)
+            var notes = document.querySelectorAll('[id^=noteDiv]');
+            if (notes.length) {
+                var element = notes[0];
+                var frameRight = document.getElementsByClassName('subPanel_right')[0];
+                element.parentNode.removeChild(element);
+                for (var key in document.getElementsByClassName('notes')) {
+                    if (note.hasOwnProperty())
+                   note.parentNode.removeChild(note);
+                }
+                dialog.app.container.relayout();
+            }
+        };
+    </script>
+</head>
+<body onload='startDialog()'>
+</body>
+</html>
