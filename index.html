@@ -49,27 +49,27 @@
             <div class="content">
                 <ul>
                     <li class="main">Connexion au serveur (en SSH)
-                        <ul class="second no-style"><li><pre><code>ssh root@[ip_dialog_server]</code></pre></li></ul>
+                        <ul class="second no-style"><li><pre><code class="sh">ssh root@[ip_dialog_server]</code></pre></li></ul>
                     </li>
                     <li class="main">Lister les fichiers uploadés
-                        <ul class="no-style"><li class="second"><pre><code>cd /home/MipDatas</code></pre></li></ul>
-                        <ul class="no-style"><li class="second"><pre><code>ls -alt</code></pre></li></ul>
+                        <ul class="no-style"><li class="second"><pre><code class="sh">cd /home/MipDatas</code></pre></li></ul>
+                        <ul class="no-style"><li class="second"><pre><code class="sh">ls -alt</code></pre></li></ul>
                     </li>
                     <li class="main">Fichier de setup du serveur Dialog
                         <ul class="no-style">
-                            <li class="second"><pre><code>cat /symlnks/setup/DialogOEMProperties.xml</code></pre></li>
+                            <li class="second"><pre><code class="sh">cat /symlnks/setup/DialogOEMProperties.xml</code></pre></li>
                             <li class="second">Possibilité d'ajouter des volumes <strong>[alias]:/[folder_path]</strong></li>
                             <li class="second">Paramétrage de size, format, quality des previews / thumbnails</li>
                         </ul>
                     </li>
                     <li class="main">Chaque modification nécessite un restart de Tomcat
                         <ul class="no-style">
-                            <li class="second"><pre><code>/symlnks/common/services/tomcat7.0 restart</code></pre></li>
+                            <li class="second"><pre><code class="sh">/symlnks/common/services/tomcat7.0 restart</code></pre></li>
                         </ul>
                     </li>
                     <li class="main">S'il y a un soucis, analyser les logs de Tomcat
                         <ul class="no-style">
-                            <li class="second"><pre><code>less /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
+                            <li class="second"><pre><code class="sh">less /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
                         </ul>
                     </li>
                 </ul>
@@ -94,7 +94,7 @@
                     </li>
                     <li class="main">Résultats sur le serveur : création de différents fichiers
                         <ul class="no-style">
-                            <li class="second"><pre><code>ls /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]*</code></pre></li>
+                            <li class="second"><pre><code class="sh">ls /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]*</code></pre></li>
                             <li class="second">*_info.xml</li>
                             <li class="second">*_thumb.jpg</li>
                             <li class="second">*_lowRes.jpg</li>
@@ -102,7 +102,7 @@
                     </li>
                     <li class="main">Fichier d'informations
                         <ul class="no-style">
-                            <li class="second"><pre><code>cat /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]_info.xml</code></pre></li>
+                            <li class="second"><pre><code class="sh">cat /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]_info.xml</code></pre></li>
                             <li class="second">mime-type</li>
                             <li class="second">page-count</li>
                             <li class="second">pixel-width</li>
@@ -133,7 +133,7 @@
                     </li>
                     <li class="main">Implication du côté serveur (nouveaux fichiers)
                         <ul class="no-style">
-                            <li class="second"><pre><code>cd /symlnks/data/6.0/DialogOEMDB/Documents/[volume]</code></pre></li>
+                            <li class="second"><pre><code class="sh">cd /symlnks/data/6.0/DialogOEMDB/Documents/[volume]</code></pre></li>
                             <li class="second">*_historic.xml
                                 <ul>
                                     <li class="third">Balise "event"</li>
@@ -162,7 +162,7 @@
                             <li class="second">Content-Type : image/jpeg (par défaut)</li>
                             <li class="second">Test pour récupération du fichier
                                 <ul>
-                                    <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
+                                    <li><pre><code class="sh">wget http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
                                 </ul>
                             </li>
                         </ul>
@@ -174,7 +174,7 @@
                             <li class="second">Content-Type : image/jpeg (par défaut)</li>
                             <li class="second">Test pour récupération du fichier
                                 <ul>
-                                    <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
+                                    <li><pre><code class="sh">wget http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
                                 </ul>
                             </li>
                         </ul>
@@ -258,21 +258,25 @@
                     <li class="main">Possibilité d'utiliser des endpoints basiques pour persister
                         <ul>
                             <li class="second">Modification du <strong>DialogOEMProperties.xml</strong></li>
-                            <li class="second">Création d'une API REST (par exemple) pour gérer la persistence</li>
+                            <li class="second">Création d'une API (par exemple) pour gérer la persistence</li>
                             <li class="second">Ajout du endpoint 'SetApprovalStatus' dans la configuration
                                 <ul>
                                     <li class="third">
-                                        <pre><code><Property Key="SetApprovalStatus" Value="http://[end_point]/$(DocumentName)/$(Status)"/></code></pre>
+                                        <pre><code class="xml"><Property Key="SetApprovalStatus" Value="http://[end_point]/$(DocumentName)/$(Status)"/></code></pre>
                                     </li>
-                                    <li class="third"><strong>[end_point]</strong> : API REST qui persiste en bdd les données</li>
+                                    <li class="third"><strong>[end_point]</strong> : API qui persiste en bdd les données</li>
                                 </ul>
                             </li>
                             <li class="second">Ajout du endpoint 'GetApprovalStatus' dans la configuration
                                 <ul>
-                                    <li class="third">
-                                        <pre><code><Property Key="GetApprovalStatus" Value="http://[end_point]/$(DocumentName)"/></code></pre>
-                                    </li>
-                                    <li class="third"><strong>[end_point]</strong> : API REST qui vient faire un GET pour récupérer les données</li>
+                                    <li class="third"><pre><code class="xml"><Property Key="GetApprovalStatus" Value="http://[end_point]/$(DocumentName)"/></code></pre></li>
+                                    <li class="third"><strong>[end_point]</strong> : API qui vient faire un GET pour récupérer les données</li>
+                                </ul>
+                            </li>
+                            <li class="second">Retours de l'API avec les différents status
+                                <ul>
+                                    <li class="third"><pre><code class="xml"><Approval Status="one of: NotSet, ToBeApproved, Approved, Partially, Rejected" SimulationScheme="?" /></code></pre></li>
+                                    <li class="third"><strong>Liste des status</strong> : <u>NotSet</u>, <u>ToBeApproved</u>, <u>Approved</u>, <u>Partially</u>, <u>Rejected</u></li>
                                 </ul>
                             </li>
                         </ul>
