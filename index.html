@@ -58,6 +58,7 @@
                         <ul class="no-style">
                             <li class="second"><pre><code>cat /symlnks/setup/DialogOEMProperties.xml</code></pre></li>
                             <li class="second">Possibilité d'ajouter des volumes <strong>[alias]:/[folder_path]</strong></li>
+                            <li class="second">Paramétrage de size, format, quality des previews / thumbnails</li>
                         </ul>
                     </li>
                     <li class="main">Chaque modification nécessite un restart de Tomcat
@@ -142,6 +143,37 @@
                                 <ul>
                                     <li class="third">Notes (ID, Content, Author, Coord, Position etc.)</li>
                                     <li class="third">Comment (ParentID, Content, Author, etc.)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">4 - Générer les previews / thumbnails</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Récupérer la preview (via l'API)
+                        <ul class="no-style">
+                            <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false]</code></pre></li>
+                            <li class="second">Uniquement la preview de la première page</li>
+                            <li class="second">Content-Type: image/jpeg (par défaut)</li>
+                            <li class="second">Test pour récupération du fichier
+                                <ul>
+                                    <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetLowRes?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="main">Récupérer la thumbnail (via l'API)
+                        <ul class="no-style">
+                            <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false]</code></pre></li>
+                            <li class="second">Uniquement la thumbnail de la première page</li>
+                            <li class="second">Content-Type: image/jpeg (par défaut)</li>
+                            <li class="second">Test pour récupération du fichier
+                                <ul>
+                                    <li><pre><code>wget http://[ip_dialog_server]/DialogOEMServer/admin/GetThumbnail?Document=[volume]:[docName]&WaitUntilCompletion=[true|false] -O test.jpeg</code></pre></li>
                                 </ul>
                             </li>
                         </ul>
