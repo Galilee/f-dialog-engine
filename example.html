@@ -1,52 +1,106 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script type='text/javascript' src='html/js/DialogueSDK.js'></script>
-    <script type='text/javascript'>
-        function startDialog() {
-            dialog.resources.resolver = function resolver(resourceName) {
-                return "html/" + resourceName;
-            };
+<head></head>
+<body onload='startDialog()'>
+<div id="HTML5_FRAME" class="frame_background"></div>
+<script type='text/javascript' src='/DialogOEMServer/html/js/DialogueSDK.js'></script>
+<script type='text/javascript'>
+    var LOCK = 1<<0;
+    var DISABLE_MULTIPAGE = 1<<1;
+    var DISABLE_NOTE = 1<<2;
 
-            dialog.app.init('/DialogOEMServer/servlet/WebViewerAppletServlet', 'UserName');
-            dialog.app.model = dialog.model.PageModel([
-                {id: 'A:1234.pdf', displayName: '1234.pdf', locked: true},
-            ]);
+    var mode = parseInt(qs()['mode'] || 0);
+    var user = qs()['user'] || 'default_user';
+    var id = qs()['id'];
+    var outputName = qs()['o'] || 'default_name.pdf';
 
-            dialog.app.attachTo(document.getElementById("HTML5_FRAME"), dialog.sdk.Full);
+    if (id === undefined) {
+        alert('Veuillez définir un fichier à ouvrir via Dialog');
+    }
 
-            window.onresize = function () {
-                if (dialog.app.container && isFunction(dialog.app.container.relayout))
-                    dialog.app.container.relayout();
-            };
-
-            dialog.app.view.showDocument(dialog.app.model.elements[0]);
-
-            // Enlève la frame de gauche (si on est dans le cas d'un mono-document)
-            var elements = document.getElementsByClassName('frame_left');
-            if (elements.length) {
-                var frameLeft = elements[0];
-                var frameCenter = document.getElementsByClassName('frame_center')[0];
-                frameLeft.parentNode.removeChild(frameLeft);
-                frameCenter.style.left = "10px";
-                dialog.app.container.relayout();
-            }
-
-            // Enlève les notes (de l'écran principal et de la frame de droite)
-            var notes = document.querySelectorAll('[id^=noteDiv]');
-            if (notes.length) {
-                var element = notes[0];
-                var frameRight = document.getElementsByClassName('subPanel_right')[0];
-                element.parentNode.removeChild(element);
-                for (var key in document.getElementsByClassName('notes')) {
-                    if (note.hasOwnProperty())
-                   note.parentNode.removeChild(note);
-                }
-                dialog.app.container.relayout();
+    // Implement remove for DOM Element
+    if (!('remove' in Element.prototype)) {
+        Element.prototype.remove = function () {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
             }
         };
-    </script>
-</head>
-<body onload='startDialog()'>
+    }
+
+    // Get url parameter
+    function qs() {
+        var assoc = {};
+        var decode = function (s) {
+            return decodeURIComponent(s.replace(/\+/g, " "));
+        };
+        var queryString = location.search.substring(1);
+        var keyValues = queryString.split('&');
+
+        for (var i in keyValues) {
+            if (keyValues.hasOwnProperty(i)) {
+                var key = keyValues[i].split('=');
+                if (key.length > 1) {
+                    assoc[decode(key[0])] = decode(key[1]);
+                }
+            }
+        }
+
+        return assoc;
+    }
+
+    function startDialog() {
+        dialog.resources.resolver = function resolver(resourceName) {
+            return "/DialogOEMServer/html/" + resourceName;
+        };
+
+        dialog.app.init('/DialogOEMServer/servlet/WebViewerAppletServlet', user);
+        dialog.app.model = dialog.model.PageModel([
+            {id: id, displayName: outputName, locked: Boolean(mode & LOCK)},
+        ]);
+
+        dialog.app.attachTo(document.getElementById("HTML5_FRAME"), dialog.sdk.Full);
+
+        window.onresize = function () {
+            if (dialog.app.container && isFunction(dialog.app.container.relayout))
+                dialog.app.container.relayout();
+        };
+
+        dialog.app.view.showDocument(dialog.app.model.elements[0]);
+
+        /*
+         * HACKS
+         */
+
+        // Enlève les boutons pour approve/reject
+        if (mode & LOCK) {
+            ['approve', 'reject', 'toggle-revisions', 'switch-tool-Annotation', 'switch-tool-Drawing', 'switch-tool-Text'].forEach(function(action) {
+                document.querySelectorAll('[data-dalim-action-id=' + action + ']')[0].remove();
+            });
+        }
+
+        // Enlève la frame de gauche (si on est dans le cas d'un mono-document)
+        if (mode & DISABLE_MULTIPAGE) {
+            var frameLeft = document.getElementsByClassName('frame_left')[0];
+            var frameCenter = document.getElementsByClassName('frame_center')[0];
+            frameLeft.remove();
+            frameCenter.style.left = "10px";
+            dialog.app.container.relayout();
+        }
+
+        // Enlève les notes (de l'écran principal et de la frame de droite)
+        if (mode & DISABLE_NOTE) {
+            document.querySelectorAll('[id^=noteDiv]')[0].remove();
+            setTimeout(function () {
+                var objectNotes = document.getElementsByClassName('notes');
+                for (var index = 0; index < objectNotes.length; index++) {
+                    if (objectNotes.hasOwnProperty(index)) {
+                        objectNotes[index--].remove();
+                    }
+                }
+            }, 500);
+            dialog.app.container.relayout();
+        }
+    };
+</script>
 </body>
 </html>
