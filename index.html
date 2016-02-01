@@ -25,7 +25,7 @@
                 <ol>
                     <li class="main">Présentation du serveur Dialog</li>
                     <li class="main">Enregistrer un nouveau document</li>
-                    <li class="main">Analyser les incidences des actions sur le serveur Dialog</li>
+                    <li class="main">Création d'annotations</li>
                     <li class="main">Générer des previews et des thumbnails</li>
                     <li class="main">Récupérer l'historique des notes
                         <ul>
@@ -55,19 +55,95 @@
                         <ul class="no-style"><li class="second"><pre><code>ls -alt</code></pre></li></ul>
                     </li>
                     <li class="main">Fichier de setup du serveur Dialog
-                        <ul class="second no-style">
+                        <ul class="no-style">
                             <li class="second"><pre><code>cat /symlnks/setup/DialogOEMProperties.xml</code></pre></li>
-                            <li class="second">- Possibilité d'ajouter des volumes <strong>[alias]:/[folder_path]</strong></li>
+                            <li class="second">Possibilité d'ajouter des volumes <strong>[alias]:/[folder_path]</strong></li>
                         </ul>
                     </li>
                     <li class="main">Chaque modification nécessite un restart de Tomcat
-                        <ul class="second no-style">
+                        <ul class="no-style">
                             <li class="second"><pre><code>/symlnks/common/services/tomcat7.0 restart</code></pre></li>
                         </ul>
                     </li>
                     <li class="main">Si il y a un soucis, analyser les logs de Tomcat
-                        <ul class="second no-style">
+                        <ul class="no-style">
                             <li class="second"><pre><code>cat /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">2 - Enregistrer un nouveau document</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Les fichiers doivent être stockés dans un répertoire bien particulier
+                        <ul class="no-style"><li class="second">/home/MipDatas</li></ul>
+                    </li>
+                    <li class="main">Copier un fichier sur le serveur Dialog (via SFTP par exemple)
+                        <ul class="no-style"><li class="second"><pre><code class="sh">scp 1234.pdf root@[ip_dialog_server]:/home/MipDatas</code></pre></li></ul>
+                        <ul class="no-style"><li class="second">Vérifier la présence du fichier uploadé</li></ul>
+                    </li>
+                    <li class="main">Enregistrer le fichier via l'API Dialog
+                        <ul class="no-style">
+                            <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/admin/RegisterDocument?Document=[volume]:[docName]&ClearOldData=[true|false]</code></pre></li>
+                            <li class="second">volume: alias du volume (la lettre)</li>
+                        </ul>
+                    </li>
+                    <li class="main">Résultats sur le serveur: créations de différents fichiers
+                        <ul class="no-style">
+                            <li class="second"><pre><code>ls /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]*</code></pre></li>
+                            <li class="second">*_info.xml</li>
+                            <li class="second">*_thumb.jpg</li>
+                            <li class="second">*_lowRes.jpg</li>
+                        </ul>
+                    </li>
+                    <li class="main">Fichier d'informations
+                        <ul class="no-style">
+                            <li class="second"><pre><code>cat /symlnks/data/6.0/DialogOEMDB/Documents/[volume]/[docName]_info.xml</code></pre></li>
+                            <li class="second">mime-type</li>
+                            <li class="second">page-count</li>
+                            <li class="second">pixel-width</li>
+                            <li class="second">pixel-height</li>
+                            <li class="second">etc.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">3 - Création d'annotations</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Ouverture de l'interface Dialog par défaut (via l'API)
+                        <ul class="no-style">
+                            <li class="second"><pre><code>http://[ip_dialog_server]/DialogOEMServer/openDocument?Document=[volume]:[docName]&Viewer=html5&User=[userName]</code></pre></li>
+                            <li class="second">On peut ajouter une notion d'utilisateur avec le paramètre <u>&User=[userName]</u> (la majuscule est primordiale)</li>
+                        </ul>
+                    </li>
+                    <li class="main">Utilisation du bouton "Annotate"</li>
+                    <li class="main">Gestion des annotations sur la frame de droite
+                        <ul>
+                            <li class="second">Triage / Filtrage / Recherche</li>
+                            <li class="second">Réponses à une annotation</li>
+                            <li class="second">Suppression</li>
+                        </ul>
+                    </li>
+                    <li class="main">Implication du côté serveur (nouveaux fichiers)
+                        <ul class="no-style">
+                            <li class="second"><pre><code>cd /symlnks/data/6.0/DialogOEMDB/Documents/[volume]</code></pre></li>
+                            <li class="second">*_historic.xml
+                                <ul>
+                                    <li class="third">Balise "event"</li>
+                                    <li class="third">Liste de toutes les actions faites sur la page courante du document</li>
+                                </ul>
+                            </li>
+                            <li class="second">*_notes.xml
+                                <ul>
+                                    <li class="third">Notes (ID, Content, Author, Coord, Position etc.)</li>
+                                    <li class="third">Comment (ParentID, Content, Author, etc.)</li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>
