@@ -5,6 +5,7 @@
     <title>Formation Dialog Engine</title>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.min.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/white.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css">
     <link rel="stylesheet" href="own.css">
 </head>
 <body>
@@ -21,7 +22,8 @@
         <section>
             <h3 class="title">Objectifs de la formation</h3>
             <div class="content">
-                <ul>
+                <ol>
+                    <li class="main">Présentation du serveur Dialog</li>
                     <li class="main">Enregistrer un nouveau document</li>
                     <li class="main">Analyser les incidences des actions sur le serveur Dialog</li>
                     <li class="main">Générer des previews et des thumbnails</li>
@@ -38,14 +40,49 @@
                             <li class="second">Activer / Désactiver la pose de notes</li>
                         </ul>
                     </li>
+                </ol>
+            </div>
+        </section>
+        <section>
+            <h3 class="title">1 - Présentation du serveur Dialog</h3>
+            <div class="content">
+                <ul>
+                    <li class="main">Connexion au serveur (en SSH)
+                        <ul class="second no-style"><li><pre><code>ssh root@[ip_dialog_server]</code></pre></li></ul>
+                    </li>
+                    <li class="main">Lister les fichiers uploadés
+                        <ul class="no-style"><li class="second"><pre><code>cd /home/MipDatas</code></pre></li></ul>
+                        <ul class="no-style"><li class="second"><pre><code>ls -alt</code></pre></li></ul>
+                    </li>
+                    <li class="main">Fichier de setup du serveur Dialog
+                        <ul class="second no-style">
+                            <li class="second"><pre><code>cat /symlnks/setup/DialogOEMProperties.xml</code></pre></li>
+                            <li class="second">- Possibilité d'ajouter des volumes <strong>[alias]:/[folder_path]</strong></li>
+                        </ul>
+                    </li>
+                    <li class="main">Chaque modification nécessite un restart de Tomcat
+                        <ul class="second no-style">
+                            <li class="second"><pre><code>/symlnks/common/services/tomcat7.0 restart</code></pre></li>
+                        </ul>
+                    </li>
+                    <li class="main">Si il y a un soucis, analyser les logs de Tomcat
+                        <ul class="second no-style">
+                            <li class="second"><pre><code>cat /symlnks/var/6.0/log/tomcat7.0/catalina.out</code></pre></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </section>
     </div>
 </div>
+<script src="//cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
 <script src="//cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.min.js"></script>
 <script>
-    Reveal.initialize();
+    Reveal.initialize({dependencies: [{
+        src: '//cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js',
+        async: true,
+        callback: function() { hljs.initHighlightingOnLoad(); }
+    }]});
 </script>
 </body>
 </html>

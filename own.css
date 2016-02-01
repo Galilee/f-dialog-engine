@@ -20,3 +20,12 @@
     font-size: 0.8em;
     font-weight: normal;
 }
+
+.reveal > .slides ul.no-style {
+    list-style-type: none;
+}
+
+.reveal pre {
+    box-shadow: none;
+    margin: 0;
+}
